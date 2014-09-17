@@ -45,7 +45,7 @@ public class GoogleLoginAction extends AnAction implements CustomComponentAction
   /**
    * Opens up the Google Login panel as a popup.
    */
-  private void showPopup(AnActionEvent e) {
+  private static void showPopup(AnActionEvent e) {
     GoogleLoginUsersPanel usersPanel = new GoogleLoginUsersPanel();
     JComponent source = (JComponent)e.getInputEvent().getSource();
 
