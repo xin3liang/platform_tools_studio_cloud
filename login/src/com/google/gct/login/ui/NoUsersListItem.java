@@ -20,7 +20,7 @@ package com.google.gct.login.ui;
  * a customized panel when no users exist.
  */
 public class NoUsersListItem {
-  public static NoUsersListItem INSTANCE = new NoUsersListItem();
+  public static final NoUsersListItem INSTANCE = new NoUsersListItem();
 
   private NoUsersListItem() {
   }

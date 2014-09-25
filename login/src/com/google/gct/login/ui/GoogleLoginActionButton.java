@@ -32,9 +32,10 @@ import java.awt.Image;
  * The Google Login button that appears on the main toolbar.
  */
 public final class GoogleLoginActionButton extends ActionButton {
-  private Icon defaultIcon;
   private final static String SIGN_IN_MESSAGE = "Sign in to Google...";
   private final static String DEFAULT_AVATAR = "/icons/loginAvatar.png";
+
+  private Icon defaultIcon;
 
   public GoogleLoginActionButton(AnAction action, Presentation presentation, String place, @NotNull Dimension minimumSize) {
     super(action, presentation, place, minimumSize);
@@ -50,7 +51,7 @@ public final class GoogleLoginActionButton extends ActionButton {
    */
   public void updateUi() {
     CredentialedUser activeUser = GoogleLogin.getInstance().getActiveUser();
-    if(activeUser == null) {
+    if (activeUser == null) {
       setToolTipText(SIGN_IN_MESSAGE);
       myPresentation.setDescription(SIGN_IN_MESSAGE);
       myPresentation.setIcon(defaultIcon);

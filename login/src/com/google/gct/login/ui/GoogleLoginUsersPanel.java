@@ -49,17 +49,17 @@ import java.util.LinkedHashMap;
 public class GoogleLoginUsersPanel extends JPanel implements ListSelectionListener {
   private static final String PLAY_CONSOLE_URL = "https://play.google.com/apps/publish/#ProfilePlace";
   private static final String CLOUD_CONSOLE_URL = "https://console.developers.google.com/accountsettings";
-  private final static String LEARN_MORE_URL = "https://developers.google.com/cloud/devtools/android_studio_templates/";
+  private static final String LEARN_MORE_URL = "https://developers.google.com/cloud/devtools/android_studio_templates/";
+  private static final int MAX_VISIBLE_ROW_COUNT = 3;
+  private static final String ADD_ACCOUNT_STRING = "Add Account";
+  private static final String SIGN_IN_STRING = "Sign In";
+  private static final String SIGN_OUT_STRING = "Sign Out";
+
   private JBList list;
   private DefaultListModel listModel;
-  private static final int MAX_VISIBLE_ROW_COUNT = 3;
-  private static final String addAccountString = "Add Account";
-  private static final String signInString = "Sign In";
-  private static final String signOutString = "Sign Out";
   private JButton signOutButton;
-  private JButton addAccountButton;
-  private boolean valueChanged = false;
-  private boolean ignoreSelection = false;
+  private boolean valueChanged;
+  private boolean ignoreSelection;
 
   public GoogleLoginUsersPanel() {
     super(new BorderLayout());
@@ -169,12 +169,12 @@ public class GoogleLoginUsersPanel extends JPanel implements ListSelectionListen
     });
 
     boolean noUsersAvailable = (listModel.getSize() == 1) && (listModel.get(0) instanceof NoUsersListItem);
-    addAccountButton = new JButton(noUsersAvailable ? signInString : addAccountString);
+    JButton addAccountButton = new JButton(noUsersAvailable ? SIGN_IN_STRING : ADD_ACCOUNT_STRING);
     AddAccountListener addAccountListener = new AddAccountListener();
     addAccountButton.addActionListener(addAccountListener);
     addAccountButton.setHorizontalAlignment(SwingConstants.LEFT);
 
-    signOutButton = new JButton(signOutString);
+    signOutButton = new JButton(SIGN_OUT_STRING);
     signOutButton.addActionListener(new SignOutListener());
 
     if(list.isSelectionEmpty()) {
@@ -204,7 +204,7 @@ public class GoogleLoginUsersPanel extends JPanel implements ListSelectionListen
   /**
    * The action listener for {@code signOutButton}
    */
-  class SignOutListener implements ActionListener {
+  private static class SignOutListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
       GoogleLogin.getInstance().logOut();
@@ -214,7 +214,7 @@ public class GoogleLoginUsersPanel extends JPanel implements ListSelectionListen
   /**
    * The action listener for {@code addAccountButton}
    */
-  class AddAccountListener implements ActionListener {
+  private static class AddAccountListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
       GoogleLogin.getInstance().logIn();
@@ -228,7 +228,7 @@ public class GoogleLoginUsersPanel extends JPanel implements ListSelectionListen
       return;
     }
     valueChanged = true;
-    if (e.getValueIsAdjusting() == false) {
+    if (!e.getValueIsAdjusting()) {
       if (list.getSelectedIndex() == -1) {
         signOutButton.setEnabled(false);
       } else {
